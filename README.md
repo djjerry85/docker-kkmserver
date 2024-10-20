@@ -14,11 +14,19 @@ docker build \
   .
 ```
 
+```bash
+docker build \
+  --platform linux/amd64 \
+  --tag kkmserver2 \
+  .
+```
+
 Запустите контейнер:
 
 ```bash
 docker run \
-  --name kkmserver \
+  --name kkmserver-v2 \
+  --platform linux/amd64 \
   --detach \
   --tty \
   --volume /etc/localtime:/etc/localtime:ro \
@@ -26,7 +34,7 @@ docker run \
   --publish 5893:5893 \
   --health-cmd /healthcheck.sh --health-start-period 3s --health-interval 1m --health-timeout 1s --health-retries 3 \
   --log-opt max-size=10m --log-opt max-file=5 \
-  quay.io/alexanderfefelov/kkmserver
+  kkmserver2
 ```
 
 При использовании кассового аппарата, подключенного через USB-порт, необходимо "прокинуть"
