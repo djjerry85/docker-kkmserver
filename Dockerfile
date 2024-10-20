@@ -1,12 +1,16 @@
 FROM ubuntu:20.04
 
-ARG KKMSERVER_VERSION=2.1.40.71_22.06.2021
+ARG KKMSERVER_VERSION=2.3.11.19_15.10.2024
 ARG KKMSERVER_STUFF=KkmServer_$KKMSERVER_VERSION.deb
 
 ADD container/ /
-ADD https://github.com/alexanderfefelov/kkmserver-dist/raw/main/deb/$KKMSERVER_STUFF /
+ADD dist/$KKMSERVER_STUFF /
 
 ENV DEBIAN_FRONTEND noninteractive
+
+#RUN dpkg --add-architecture armhf \
+ #   && apt install libc6:armhf
+
 RUN apt-get -qq update \
   && apt-get -qq install --no-install-recommends \
        ca-certificates \
@@ -17,9 +21,14 @@ RUN apt-get -qq update \
        liblttng-ust0 \
        libssl1.1 \
        netcat `# For health checks` \
-       openssl \
-  && dpkg --install $KKMSERVER_STUFF \
-  && apt-get -qq clean \
+       openssl
+
+    #RUN dpkg --add-architecture amd64 \
+    # &&  apt-get update
+
+  RUN dpkg --install $KKMSERVER_STUFF
+
+  RUN apt-get -qq clean \
   && rm --recursive --force /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && rm --force $KKMSERVER_STUFF
 

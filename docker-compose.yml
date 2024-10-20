@@ -1,0 +1,25 @@
+services:
+  kkmserver-new:
+    platform: linux/amd64
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - "5893:5893"
+#    healthcheck:
+#      test: "/bin/sh /healthcheck.sh"
+#      start_period: "3s"
+#      interval: "1m"
+#      timeout: "1s"
+#      retries: 3
+    volumes:
+      - "kkmserver:/opt/kkmserver/Settings"
+      - "/etc/localtime:/etc/localtime:ro"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: 5
+
+volumes:
+  kkmserver: {}
+
