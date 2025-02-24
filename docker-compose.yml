@@ -1,6 +1,7 @@
 services:
   kkmserver-new:
     platform: linux/amd64
+    tty: true
     build:
       context: .
     restart: unless-stopped
